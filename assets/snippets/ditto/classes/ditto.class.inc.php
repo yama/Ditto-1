@@ -837,7 +837,7 @@ class ditto {
         $sqlWhere[] = "AND sc.deleted={$deleted}";
         $sqlWhere[] = $where;
         if($pubOnly && $access) $sqlWhere[] = "AND {$access}";
-        $sqlWhere[] = 'GROUP BY sc.id';
+        sqlWhere[] = 'GROUP BY '. $fields;
         $rs= $modx->db->select("DISTINCT {$fields}",$from,$sqlWhere,$sort,$limit);
         if(!$modx->db->getRecordCount($rs)) return false;
 
