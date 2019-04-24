@@ -626,9 +626,11 @@ class ditto {
             if ($this->advSort == true && $randomize==0) {
                 $resource = $this->multiSort($resource,$orderBy);
             }
-            if (count($orderBy['custom']) > 0) {
-                $resource = $this->userSort($resource,$orderBy);
-            }
+            if(is_array($orderBy['custom'])){ 
+                   if (count($orderBy['custom']) > 0) {
+                       $resource = $this->userSort($resource,$orderBy);
+                  }
+             }
 
             //intersel - see above in order to limit the array to $limit.
                     if ($limit) $resource=array_slice($resource, 0, $limit);
