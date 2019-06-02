@@ -42,7 +42,7 @@ $ditto_params =& $modx->event->params;
     Default:
     [(base_path)]assets/snippets/ditto/
 */
-$dittoID = (isset($id)) ? $id.'_' : '';
+$dittoID = isset($id) ? $id.'_' : '';
 $GLOBALS['dittoID'] = $dittoID;
 /*
     Param: id
@@ -60,7 +60,7 @@ $GLOBALS['dittoID'] = $dittoID;
     '' - blank
 */
 if(!isset($language)) $language = $modx->config['manager_language'];
-if (!is_file("{$ditto_base}lang/{$language}.inc.php")) {
+if (!is_file($ditto_base . 'lang/' . $language . '.inc.php')) {
     $language ='english';
 }
 /*
@@ -75,7 +75,7 @@ if (!is_file("{$ditto_base}lang/{$language}.inc.php")) {
     Default:
     'english'
 */
-$format = (isset($format)) ? strtolower($format) : 'html' ;
+$format = isset($format) ? strtolower($format) : 'html' ;
 /*
     Param: format
 
@@ -92,7 +92,7 @@ $format = (isset($format)) ? strtolower($format) : 'html' ;
     Default:
     'html'
 */
-$config = (isset($config)) ? $config : 'default';
+$config = isset($config) ? $config : 'default';
 /*
     Param: config
 
@@ -126,7 +126,7 @@ $debug = isset($debug)? $debug : 0;
     Related:
     - <debug>
 */
-$phx = (isset($phx))? $phx : 1;
+$phx = isset($phx) ? $phx : 1;
 /*
     Param: phx
 
@@ -182,14 +182,14 @@ $orderBy = array('parsed'=>array(),'custom'=>array(),'unparsed'=>(isset($orderBy
 //---Includes-------------------------------------------------------- //
 
 $files = array (
-    'base_language'  => "{$ditto_base}lang/english.inc.php",
-    'language'       => "{$ditto_base}lang/{$language}.inc.php",
-    'main_class'     => "{$ditto_base}classes/ditto.class.inc.php",
-    'template_class' => "{$ditto_base}classes/template.class.inc.php",
-    'filter_class'   => "{$ditto_base}classes/filter.class.inc.php",
-    'format'         => "{$ditto_base}formats/$format.format.inc.php",
-    'config'         => "{$ditto_base}configs/default.config.php",
-    'user_config' => (substr($config, 0, 5) != '@FILE') ? "{$ditto_base}configs/{$config}.config.php" : $modx->config['base_path'].trim(substr($config, 5))
+    'base_language'  => $ditto_base . 'lang/english.inc.php',
+    'language'       => $ditto_base . 'lang/' . $language . ".inc.php",
+    'main_class'     => $ditto_base . 'classes/ditto.class.inc.php',
+    'template_class' => $ditto_base . 'classes/template.class.inc.php',
+    'filter_class'   => $ditto_base . 'classes/filter.class.inc.php',
+    'format'         => $ditto_base . 'formats/' . $format . ".format.inc.php",
+    'config'         => $ditto_base . 'configs/default.config.php',
+    'user_config' => (substr($config, 0, 5) != '@FILE') ? $ditto_base . 'configs/' . $config . '.config.php' : $modx->config['base_path'].trim(substr($config, 5))
 );
 
 if ($phx == 1 && !$modx->config['enable_filter']) {
@@ -210,7 +210,7 @@ foreach ($files as $filename => $filevalue) {
         include_once($filevalue);
     } elseif (is_file($filevalue)) {
         include($filevalue);
-    } elseif ($filename == 'language') {
+    } elseif ($filename === 'language') {
         $modx->logEvent(1, 3, 'Language file does not exist Please check: ' . $filevalue, 'Ditto ' . $ditto_version);
         return 'Language file does not exist Please check: ' . $filevalue;
     } else {
@@ -236,8 +236,8 @@ if (isset($tagData)) {
 if(count($extenders) > 0) {
     $extenders = array_unique($extenders);
     foreach ($extenders as $extender) {
-            if(substr($extender, 0, 5) != '@FILE') {
-                $extender_path = "{$ditto_base}extenders/{$extender}.extender.inc.php";                
+            if(strpos($extender, '@FILE') !== 0) {
+                $extender_path = $ditto_base . 'extenders/' . $extender . '.extender.inc.php';
             } else {
                 $extender_path = $modx->config['base_path'].trim(substr($extender, 5));
             }
@@ -301,7 +301,7 @@ $documents = isset($documents) ? $ditto->cleanIDs($documents) : false;
     - <parents>
 */
 
-$IDs = ($idType == 'parents') ? $parents : $documents;
+$IDs = ($idType === 'parents') ? $parents : $documents;
     // Variable: IDs
     // Internal variable which holds the set of IDs for Ditto to fetch
 
@@ -487,7 +487,7 @@ $hidePrivate = isset($hidePrivate)? $hidePrivate : 1;
     - <showInMenuOnly>
     - <where>
 */
-$seeThruUnpub = (isset($seeThruUnpub))? $seeThruUnpub : 1 ;
+$seeThruUnpub = isset($seeThruUnpub) ? $seeThruUnpub : 1 ;
 /*
     Param: seeThruUnpub
 
@@ -507,7 +507,7 @@ $seeThruUnpub = (isset($seeThruUnpub))? $seeThruUnpub : 1 ;
     - <showInMenuOnly>
     - <where>
 */
-$queryLimit = (isset($queryLimit))? $queryLimit : '';
+$queryLimit = isset($queryLimit) ? $queryLimit : '';
 /*
     Param: queryLimit
 
@@ -524,7 +524,7 @@ $queryLimit = (isset($queryLimit))? $queryLimit : '';
     Related:
     - <where>
 */
-$where = (isset($where))? $where : '';
+$where = isset($where) ? $where : '';
 /*
     Param: where
 
@@ -581,7 +581,7 @@ $hiddenFields = isset($hiddenFields) ? explode(',',$hiddenFields) : false;
     [NULL]
 */
 $offset = isset($start) ? $start : 0;
-$start = (isset($_GET[$dittoID.'start'])) ? intval($_GET[$dittoID.'start']) : 0;
+$start = isset($_GET[$dittoID.'start']) ? (int)$_GET[$dittoID . 'start'] : 0;
 /*
     Param: start
 
@@ -634,7 +634,7 @@ $localFilterDelimiter = isset($localFilterDelimiter) ? $localFilterDelimiter : '
 $filters['custom'] = isset($cFilters) ? array_merge($filters['custom'],$cFilters) : $filters['custom'];
 $filters['parsed'] = isset($parsedFilters) ? array_merge($filters['parsed'],$parsedFilters) : $filters['parsed'];
     // handle 2.0.0 compatibility
-$filter = (isset($filter) || ($filters['custom'] != false) || ($filters['parsed'] != false)) ? $ditto->parseFilters($filter,$filters['custom'],$filters['parsed'],$globalFilterDelimiter,$localFilterDelimiter) : false;
+$filter = isset($filter) || ($filters['custom'] != false) || ($filters['parsed'] != false) ? $ditto->parseFilters($filter,$filters['custom'],$filters['parsed'],$globalFilterDelimiter,$localFilterDelimiter) : false;
 /*
     Param: filter
 
@@ -670,7 +670,7 @@ $filter = (isset($filter) || ($filters['custom'] != false) || ($filters['parsed'
     - <parseFilters>
 */
 
-$randomize = (isset($randomize))? $randomize : 0;
+$randomize = isset($randomize) ? $randomize : 0;
 /*
     Param: randomize
     
@@ -685,7 +685,7 @@ $randomize = (isset($randomize))? $randomize : 0;
     Default:
     0 - off
 */
-$save = (isset($save))? $save : 0;
+$save = isset($save) ? $save : 0;
 /*
     Param: save
 
@@ -704,11 +704,11 @@ $save = (isset($save))? $save : 0;
 */
 $templates = array(
     'default' => '@CODE:' . $_lang['default_template'],
-    'base' => (isset($tpl)) ? $tpl : NULL,
-    'alt' => (isset($tplAlt)) ? $tplAlt : NULL,
-    'first' => (isset($tplFirst)) ? $tplFirst : NULL,
-    'last' => (isset($tplLast)) ? $tplLast : NULL,
-    'current' => (isset($tplCurrentDocument)) ? $tplCurrentDocument : NULL
+    'base' => isset($tpl) ? $tpl : NULL,
+    'alt' => isset($tplAlt) ? $tplAlt : NULL,
+    'first' => isset($tplFirst) ? $tplFirst : NULL,
+    'last' => isset($tplLast) ? $tplLast : NULL,
+    'current' => isset($tplCurrentDocument) ? $tplCurrentDocument : NULL
 );
 /*
     Param: tpl
@@ -813,10 +813,10 @@ $count = $count-$offset;
 if ($count > 0) {
     // if documents are returned continue with execution
     
-    $total = ($total == 'all') ? $count : min($total,$count);
+    $total = $total === 'all' ? $count : min($total,$count);
         // set total equal to count if all documents are to be included
     
-    $display = ($display == 'all') ? min($count,$total) : min($display,$total);
+    $display = $display === 'all' ? min($count,$total) : min($display,$total);
         // allow show to use all option
 
     $stop = ($save != '1') ? min($total-$start,$display) : min($count,$total);
@@ -1035,7 +1035,6 @@ if ($count > 0) {
             $modx->setPlaceholder($dittoID.'item['.abs($start-$x).']',$renderedOutput);
             /*
                 Placeholder: item[x]
-
                 Content:
                 Individual items rendered output
             */
