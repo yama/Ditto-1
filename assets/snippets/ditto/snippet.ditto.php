@@ -6,7 +6,7 @@ if(!defined('MODX_BASE_PATH')) {die('What are you doing? Get out of here!');}
  * Summarizes and lists pages to create blogs, catalogs, PR archives, bio listings and more
  *
  * @category    snippet
- * @version     2.1.3
+ * @version     2.1.4
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @internal    @properties
  * @internal    @modx_category Content
@@ -22,7 +22,7 @@ if(!defined('MODX_BASE_PATH')) {die('What are you doing? Get out of here!');}
 
 //---Core Settings---------------------------------------------------- //
 
-$ditto_version = '2.1.3';
+$ditto_version = '2.1.4';
     // Ditto version being executed
 
 if(isset($ditto_base)) $ditto_base = $modx->config['base_path'].ltrim($ditto_base,'/');
