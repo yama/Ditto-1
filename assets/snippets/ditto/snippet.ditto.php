@@ -25,7 +25,7 @@ if(!defined('MODX_BASE_PATH')) {die('What are you doing? Get out of here!');}
 $ditto_version = '2.1.4';
     // Ditto version being executed
 
-if(isset($ditto_base)) $ditto_base = $modx->config['base_path'].ltrim($ditto_base,'/');
+if(isset($ditto_base)) $ditto_base = $modx->config['base_path'].ltrim($ditto_base,'/') . '/';
 else                   $ditto_base = str_replace('\\','/',__DIR__) . '/';
 
 $ditto_params =& $modx->event->params;
